@@ -1,6 +1,8 @@
 import React from "react";
 import {
+  Alert,
   Dimensions,
+  FlatList,
   Image,
   Linking,
   ScrollView,
@@ -17,6 +19,7 @@ import { es } from "date-fns/locale";
 import StyledText from "./StyledText";
 import ReadMoreText from "./ReadMoreText";
 import Icon from "react-native-vector-icons/FontAwesome5";
+import RelatedAnimeList from "./RelatedAnimeList";
 
 const Anime = () => {
   const { slug } = useParams();
@@ -28,6 +31,7 @@ const Anime = () => {
   if (status !== "success") return <Text>Loading...</Text>;
 
   const dateFormatted = (aired) => {
+    if (!aired) return "No hay fecha";
     let from = "";
     if (aired.from)
       from = `Transmitido del ${format(new Date(aired.from), "dd  MMMM  yyyy", {
@@ -55,16 +59,18 @@ const Anime = () => {
         />
       </>
     );
-  }; 
+  };
   const openTrailerInBrowser = () => {
-    Linking.openURL(data?.jikan?.trailer?.url);
+    const url = data?.jikan?.trailer?.url;
+    if (url) return Linking.openURL(url);
+    Alert.alert("No hay trailer disponible");
+    //Linking.openURL(data?.jikan?.trailer?.url);
   };
 
   const dimensions = Dimensions.get("window");
   const imageHeight = Math.round((dimensions.width * 9) / 16);
   const imageWidth = dimensions.width;
 
-  
   //console.log(imageHeight, imageWidth);
   return (
     <ScrollView style={styles.container}>
@@ -72,25 +78,29 @@ const Anime = () => {
         <Image
           style={{ height: imageHeight, width: imageWidth }}
           //source={{ uri: data?.jikan.images.jpg.large_image_url }}
-          source={{ uri: data?.jikan?.trailer?.images?.large_image_url }}
+          source={{
+            uri: data?.jikan?.trailer?.images?.large_image_url || data.banner,
+          }}
         />
       </View>
       <View style={styles.infoContainer}>
         <View style={styles.coverSection}>
           <Image
             style={styles.coverImage}
-            source={{ uri: data?.jikan.images.jpg.large_image_url }}
+            source={{
+              uri: data?.jikan?.images?.jpg?.large_image_url || data?.cover,
+            }}
           />
         </View>
         <View style={styles.infoSection}>
           <StyledText fontWeight="bold" fontSize="title" style={styles.info}>
-            {data?.jikan.title}
+            {data?.jikan?.title || data?.title}
           </StyledText>
           <StyledText fontWeight="bold" fontSize="subTitle" style={styles.info}>
-            {dateFormatted(data?.jikan.aired)}
+            {dateFormatted(data?.jikan?.aired)}
           </StyledText>
           <StyledText fontWeight="bold" fontSize="subTitle" style={styles.info}>
-            {data?.jikan.type || data.type}
+            {data?.jikan?.type || data.type}
           </StyledText>
         </View>
       </View>
@@ -119,7 +129,7 @@ const Anime = () => {
             style={styles.scoreText}
           >
             {parseFloat(
-              Math.round((data?.jikan.score / 10) * 5 * 100) / 100
+              Math.round((data?.jikan?.score / 10) * 5 * 100) / 100
             ).toFixed(2)}
           </StyledText>
           <StyledText
@@ -127,7 +137,7 @@ const Anime = () => {
             fontSize="subTitle"
             style={styles.scoreText}
           >
-            {data?.jikan.scored_by} votos
+            {data?.jikan?.scored_by} votos
           </StyledText>
         </View>
         <View style={styles.myScoreContainer}>
@@ -217,9 +227,7 @@ const Anime = () => {
           </View>
         </View>
         <View style={styles.trailerSection}>
-          <TouchableOpacity
-            onPress={() => openTrailerInBrowser()}
-          >
+          <TouchableOpacity onPress={() => openTrailerInBrowser()}>
             <StyledText
               fontWeight="bold"
               fontSize="subheading"
@@ -245,29 +253,7 @@ const Anime = () => {
           </StyledText>
         </TouchableOpacity>
       </View>
-
-      
-      <View style={styles.relatedSection}>
-        <StyledText fontWeight="bold" fontSize="subheading" style={styles.info}>
-          Animes relacionados
-        </StyledText>
-        <View style={styles.relatedContainer}>
-          {data?.related?.map((related) => (
-            <View style={styles.relatedItem} key={related.id}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Anime", { data: related })}
-              >
-                <Image
-
-                  style={styles.relatedImage}
-                  source={{ uri: related?.image }}
-                />
-              </TouchableOpacity>
-            </View>
-          ))}
-        </View>
-      </View>
-
+      <RelatedAnimeList related={data.related} />
     </ScrollView>
   );
 };
@@ -410,7 +396,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 10,
- 
   },
   episodesButton: {
     backgroundColor: theme.backgroundColors.extras,
@@ -423,6 +408,8 @@ const styles = StyleSheet.create({
     //fontSize: theme.fontSizes.body,
     textAlign: "center",
   },
+
+  //related
 });
 
 export default Anime;
