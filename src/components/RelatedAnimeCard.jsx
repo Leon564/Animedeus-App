@@ -2,11 +2,13 @@ import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import StyledText from "./StyledText";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import theme from "../theme";
+import { useNavigate } from "react-router-native";
 
 const RelatedAnimeCard = ({ item }) => {
+  const navigate = useNavigate();
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate(`/anime/${item.slug}`)}
+      onPress={() => navigate(`/anime/${item.slug || item.id}?page_title=${item.title}`, { relative: true, replace: true })}
       style={styles.relatedItem}
       key={item.slug}
     >
@@ -52,7 +54,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     alignContent: "flex-start",
 
-    //marginRight: 10,
+    marginRight: 10,
   },
   relatedImageContainer: {
     width: "100%",

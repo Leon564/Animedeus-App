@@ -34,7 +34,7 @@ const SlideMenu = (/*{ hidden, setHidden }*/) => {
     );
 
   }, [location, display]);
-  console.log("display2", display);
+  
   const entryAnimation = useAnimatedStyle(() => {
     return {
       transform: [{ translateX: transform.value }],
@@ -51,16 +51,11 @@ const SlideMenu = (/*{ hidden, setHidden }*/) => {
     transform.value = withTiming(-300);
     setTimeout(() => {
       opacity.value = 0;
-      setDisplay(false);
-      console.log("display slide", display);
-      const a = new URLSearchParams(location.search).delete("slide_menu");
-      console.log("location.search", location.search);
-      console.log("a", a);
+      setDisplay(false);     
       if(closeSection)navigate({ search: location.search.replace("slide_menu=true", "") });
       //setHidden();
     }, 300);
   };
-
   if (/*hidden*/!display) return null; 
 
   return (

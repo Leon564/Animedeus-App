@@ -28,8 +28,8 @@ const DirectoryBar = ({from}) => {
     <View style={styles.header}>
       <TouchableOpacity
         style={styles.headerButton}
-        onPress={() => navigate({ search: "",pathname:from })}
-        //onPress={() => navigate("/")}
+        //onPress={() => navigate({ search: "",pathname:from.pathname })}
+        onPress={() => navigate(-1)}
         //onPress={() => navigate(-1,{search:""}) /*setHidden()*/}
       >
         <Icon

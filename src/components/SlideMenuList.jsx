@@ -7,8 +7,10 @@ import StyledText from "./StyledText";
 const SlideMenuList = ({hideMenu}) => {
   const navigate = useNavigate();
   const handlePress = (item) => {
-    navigate(item.path);
     hideMenu();
+    navigate({ search: `?slide_menu=false` });
+    navigate(item.path);
+    
   };
   return (
     <FlatList

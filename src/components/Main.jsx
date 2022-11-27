@@ -54,7 +54,7 @@ const Main = () => {
         );
         return true;
       } else {
-        navigate("/");
+        navigate(-1);
         return true;
       }
     };

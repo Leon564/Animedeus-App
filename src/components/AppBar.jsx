@@ -10,6 +10,7 @@ import {
 import theme from "../theme";
 
 const AppBar = () => {
+  const excludeRoutes = ["/anime", "/directory"];
   const [title, setTitle] = React.useState("AnimeDeus");
   const [display, setDisplay] = React.useState("true");
 
@@ -21,13 +22,25 @@ const AppBar = () => {
     setDisplay(
       new URLSearchParams(location.search).get("bar_display") ? "none" : "true"
     );
+    if (excludeRoutes.includes(location.pathname)) {
+      setDisplay("none");
+    }
   }, [location.search]);
 
   const navigate = useNavigate();
   const slideshow = () => {
+    let n = location.search;
+    if (n) {
+      if (n.includes("slide_menu=false")) {
+        n = n.replace("slide_menu=false", "slide_menu=true");
+      } else {
+        n = n + "&slide_menu=true";
+      }
+    }else{
+      n = "?slide_menu=true";
+    }
     navigate({
-      search:
-        (location.search ? location.search + "&" : "?") + "slide_menu=true",
+      search: n,
     });
   };
   if (display === "none") return null;
