@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useParams } from "react-router-native";
+import { useNavigate, useParams } from "react-router-native";
 import useFetch from "../hooks/useFetch";
 import theme from "../theme";
 
@@ -23,19 +23,21 @@ import AnimeScoreSection from "./AnimeScoreSection";
 import AnimeExtraInfoSection from "./AnimeExtraInfoSection";
 
 const Anime = () => {
+  const navigate = useNavigate();
   const { slug } = useParams();
   const { data, status } = useFetch(
     "https://animedeus-api.onrender.com/animes/" + slug
   );
-  console.log(slug);
+  //console.log(slug);
   if (status === "error") return <Text>Error</Text>;
   if (status !== "success") return <Text>Loading...</Text>;
-
+  
   const dimensions = Dimensions.get("window");
   const imageHeight = Math.round((dimensions.width * 9) / 16);
   const imageWidth = dimensions.width;
 //console.log(data)
   //console.log(imageHeight, imageWidth);
+  //
   return (
     <ScrollView style={styles.container}>
       <View style={styles.bannerContainer}>
@@ -55,7 +57,7 @@ const Anime = () => {
 
       <View style={styles.episodesSection}>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Episodes", { data })}
+          onPress={() => navigate(`/episodes/${data.slug}?page_title=${data.title}`)}
           style={styles.episodesButton}
         >
           <StyledText

@@ -26,7 +26,7 @@ const Player = ({from}) => {
       console.log(zippyshareurl);
       useZippyshare(zippyshareurl      
       ).then((data) => {
-        if(!data) return Alert.alert("Error", "No se pudo reproducir el video", [{text: "OK", onPress: () => navigate({ search: "",pathname:"../" },{relative: true}) }]);
+        if(!data) return Alert.alert("Error", "No se pudo reproducir el video", [{text: "OK", onPress: () => navigate(-1) }]);
         setVideoUrl(data);
         setLoading(false);
       });

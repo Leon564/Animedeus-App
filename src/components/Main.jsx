@@ -17,6 +17,7 @@ import WebViewTest from "./webViewTest";
 import Anime from "./Anime";
 import Player from "./Player";
 import Directory from "./Directory";
+import Episodes from "./Episodes";
 
 const Main = () => {
   const [history, setHistory] = React.useState([]);
@@ -73,6 +74,7 @@ const Main = () => {
         <Route path="/" element={<AnimeRecentList />} />
         <Route path="/anime/:slug" element={<Anime />} />
         <Route path="/player/:slug/:episodeNumber" element={<Player from={history[history.length -2]} />} />
+        <Route path="/episodes/:slug" element={<Episodes />} />
         <Route path="/directory" element={<Directory from={history[history.length -2]} />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
@@ -88,6 +90,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     //justifyContent: "center",
     width: "100%",
+    height: "100%",
   },
 });
 
