@@ -1,11 +1,12 @@
 import { Linking, Platform } from "react-native";
 import { ActivityAction, startActivityAsync } from "expo-intent-launcher";
+import { useNavigate } from "react-router-native";
 
-export function playVideo(url) {
+export function playVideo(url, callBack) {
+  //const navigate = useNavigate();
   if (Platform.OS === "android") {
-    console.log("playVideo: " + url);
     const intentParams = {
-      data: url || "https://www.w3schools.com/html/mov_bbb.mp4",
+      data: url ,
       flags: 0x1,
       type: "video/mp4",
     };
@@ -14,12 +15,13 @@ export function playVideo(url) {
       (result) => {
         if (result.resultCode === 0) {
           console.log("Video played successfully");
+          callBack();
         } else {
           console.log("Video failed to play");
         }
       }
     );
   } else {
-    Linking.openURL(url || "https://www.w3schools.com/html/mov_bbb.mp4");
+    Linking.openURL(url);
   }
 }

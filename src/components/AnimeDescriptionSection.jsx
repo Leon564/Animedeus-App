@@ -5,12 +5,12 @@ import ReadMoreText from "./ReadMoreText";
 const AnimeDescriptionSection = ({ anime }) => (
   <View style={styles.descriptionSection}>
     <ReadMoreText
-      style={styles.sinopsis}
+      style={styles.synopsis}
       type="alert"
       title={anime.title}
       triggerStyle={styles.trigger}
     >
-      {anime.sinopsis}
+      {anime.synopsis}
     </ReadMoreText>
   </View>
 );
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: theme.backgroundColors.darkSecondary,
   },
-  sinopsis: {
+  synopsis: {
     color: theme.colors.textPrimary,
     fontSize: theme.fontSizes.body,
   },

@@ -5,6 +5,8 @@ import StyledText from "./StyledText";
 import { useNavigate } from "react-router-native";
 import useZippyshare from "../hooks/useZippyshare";
 import { useState } from "react";
+
+import Icon from "react-native-vector-icons/FontAwesome5";
 import useTimeAgo from "../hooks/useTimeAgo";
 const AnimeItem = ({ item }) => {
   const navigate = useNavigate();
@@ -29,27 +31,55 @@ const AnimeItem = ({ item }) => {
   };
   */
   const getPlayer = () => {
-    navigate(`/player/${item.slug}/${item.episodes[0].episodeNumber}?page_title=${item.title}`);
-   //Alert.alert("Error", "No se pudo reproducir el video");
+    navigate(
+      `/player/${item.slug}/${item.episodes[0].episodeNumber}?page_title=${item.title}`
+    );
+    //Alert.alert("Error", "No se pudo reproducir el video");
   };
 
   return (
     <TouchableOpacity style={styles.itemContainer} onPress={() => getPlayer()}>
-      <Image style={styles.image} source={{ uri: item.cover }} />
-      <View style={styles.episodeDetails}>
-        <StyledText numberOfLines={1} fontWeight={"bold"} color="white">
-          {item.title}
-        </StyledText>
-        <StyledText
-          numberOfLines={1}
-          color="white"
-          style={{ marginVertical: 10 }}
-        >
-          {`Episodio: ${item.episodes[0].episodeNumber}`}
-        </StyledText>
-        <StyledText numberOfLines={1} color="white" fontSize={"subTitle"}>
-          {`Hace ${timeAgo}`}
-        </StyledText>
+      <View style={styles.imageContainer}>
+        <Image style={styles.image} source={{ uri: item.cover }} />
+      </View>
+      <View style={styles.infoContainer}>
+        <View style={styles.episodeDetails}>
+          <StyledText numberOfLines={1} fontWeight={"bold"} color="white">
+            {item.title}
+          </StyledText>
+          <StyledText
+            numberOfLines={1}
+            color="white"
+            style={{ marginVertical: 10 }}
+          >
+            {`Episodio: ${item.episodes[0].episodeNumber}`}
+          </StyledText>
+          <StyledText numberOfLines={1} color="white" fontSize={"subTitle"}>
+            {`Hace ${timeAgo}`}
+          </StyledText>
+        </View>
+        <View style={styles.Buttons}>
+          <TouchableOpacity
+            style={styles.detailsButton}
+            onPress={() => navigate(`/anime/${item.slug}`)}
+          >
+            <Icon
+              style={styles.headerButtonText}
+              name={theme.icons.info}
+              color="#fff"
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.detailsButton}
+            onPress={() => getPlayer()}
+          >
+            <Icon
+              style={styles.headerButtonText}
+              name={theme.icons.play}
+              color="#fff"
+            />
+          </TouchableOpacity>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -65,12 +95,19 @@ const styles = StyleSheet.create({
     backgroundColor: theme.backgroundColors.darkSecondary,
     marginHorizontal: 7,
     marginTop: 7,
+    height: 150,
+  },
+  imageContainer: {
+    width: "30%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   image: {
     //height: 150,
     //width: 100,
-    height: 150,
-    width: "30%",
+    height: "100%",
+    width: "100%",
     resizeMode: "cover",
   },
   episodeDetails: {
@@ -79,7 +116,25 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "flex-start",
+  },
+  infoContainer: {
     width: "70%",
+  },
+  Buttons: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    paddingHorizontal: 20,
+    paddingBottom: 5,
+  },
+
+  detailsButton: {
+    backgroundColor: theme.colors.primary,
+    padding: 10,
+    width: "45%",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 

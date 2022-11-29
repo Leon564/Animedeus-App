@@ -10,7 +10,9 @@ const AnimeList = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("https://animedeus-api.onrender.com/episodes/recents");
+      const response = await fetch(
+        "https://animedeus-api.onrender.com/episodes/recents"
+      );
       const data = await response.json();
       setData(data);
       setStatus("success");
@@ -37,8 +39,11 @@ const AnimeList = () => {
   ) : (
     <FlatList
       data={data.data}
+      initialNumToRender={10}
       keyExtractor={({ _id }, index) => _id}
-      renderItem={({ item, index }) => <EpisodeItem item={item} index={index} />}
+      renderItem={({ item, index }) => (
+        <EpisodeItem item={item} index={index} />
+      )}
       //renderItem={({ item, index }) => <StyledText>{item.title}</StyledText>}
       style={styles.list}
       refreshing={refreshing}

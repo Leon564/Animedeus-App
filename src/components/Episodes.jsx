@@ -48,7 +48,7 @@ const Episodes = () => {
         <View style={styles.EpisodeImageContainer}>
           <Image
             style={styles.EpisodeImage}
-            source={{ uri: "https://i.ibb.co/1Tp6cTn/x1080.jpg" }}
+            source={{ uri: item.screenshot|| "https://i.ibb.co/1Tp6cTn/x1080.jpg" }}
           />
         </View>
         <View style={styles.EpisodeInfo}>

@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "animedeus",
-    "slug": "animedeus",
-    "version": "1.0.0",
+    "name": "Animedeus",
+    "slug": "Animedeus",
+    "version": "0.1.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",

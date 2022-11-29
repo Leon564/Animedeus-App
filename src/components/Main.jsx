@@ -13,11 +13,13 @@ import AnimeRecentList from "./AnimeRecentList";
 import SlideMenu from "./SlideMenu";
 import { StatusBar } from "expo-status-bar";
 import AppBar from "./AppBar";
-import WebViewTest from "./webViewTest";
+import Chat from "./Chat";
 import Anime from "./Anime";
 import Player from "./Player";
 import Directory from "./Directory";
 import Episodes from "./Episodes";
+import Configurations from "./Configurations";
+import FeaturedError from "./FeaturedError";
 
 const Main = () => {
   const [history, setHistory] = React.useState([]);
@@ -37,7 +39,6 @@ const Main = () => {
       setHistory(history.slice(1));
     }
     const handleBackButton = () => {
-      console.log("back button pressed on " + location.pathname);
       if (location.pathname === "/") {
         Alert.alert(
           "Exit App",
@@ -73,10 +74,18 @@ const Main = () => {
       <Routes>
         <Route path="/" element={<AnimeRecentList />} />
         <Route path="/anime/:slug" element={<Anime />} />
-        <Route path="/player/:slug/:episodeNumber" element={<Player from={history[history.length -2]} />} />
+        <Route
+          path="/player/:slug/:episodeNumber"
+          element={<Player from={history[history.length - 2]} />}
+        />
         <Route path="/episodes/:slug" element={<Episodes />} />
-        <Route path="/directory" element={<Directory from={history[history.length -2]} />} />
-        <Route path="*" element={<Navigate to="/" />} />
+        <Route
+          path="/directory"
+          element={<Directory from={history[history.length - 2]} />}
+        />
+        <Route path="/options" element={<Configurations />} />
+        <Route path="/chat" element={<Chat />} />
+        <Route path="*" element={<FeaturedError />} />
       </Routes>
     </View>
   );

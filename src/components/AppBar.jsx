@@ -7,10 +7,11 @@ import {
   useRoutes,
   useLocation,
 } from "react-router-native";
+import config from "../config";
 import theme from "../theme";
 
 const AppBar = () => {
-  const excludeRoutes = ["/anime", "/directory"];
+  const excludeRoutes = config.APPBAR_EXCLUDE_ROUTES;
   const [title, setTitle] = React.useState("AnimeDeus");
   const [display, setDisplay] = React.useState("true");
 

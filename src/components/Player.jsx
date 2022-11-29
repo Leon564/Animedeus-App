@@ -6,12 +6,14 @@ import useFetch from "../hooks/useFetch";
 import useZippyshare from "../hooks/useZippyshare";
 import theme from "../theme";
 import StyledText from "./StyledText";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { playVideo } from "../playVideo";
 
-
-const Player = ({from}) => {
+const Player = ({ from }) => {
   const { slug, episodeNumber } = useParams();
   const [loading, setLoading] = React.useState(true);
   const [videoUrl, setVideoUrl] = React.useState(null);
+  const [useLocalPlayer, setUseLocalPlayer] = React.useState(false);
 
   const { status, data } = useFetch(
     `https://animedeus-api.onrender.com/episodes/${slug}/${episodeNumber}`
@@ -19,23 +21,32 @@ const Player = ({from}) => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    if (status === "success") {
-      const zippyshareurl = data?.episode?.downloadServers?.find(
-        (server) => server.title === "Zippyshare"
-      )?.url;
-      console.log(zippyshareurl);
-      useZippyshare(zippyshareurl      
-      ).then((data) => {
-        if(!data) return Alert.alert("Error", "No se pudo reproducir el video", [{text: "OK", onPress: () => navigate(-1) }]);
-        setVideoUrl(data);
-        setLoading(false);
-      });
-    }
+    (async () => {
+      const userOptions = await AsyncStorage.getItem("userOptions");
+      if (userOptions) {
+        const parsedUserOptions = JSON.parse(userOptions);
+        setUseLocalPlayer(parsedUserOptions.localPlayer);
+      }
+      if (status === "success") {
+        const zippyshareurl = data?.episode?.downloadServers?.find(
+          (server) => server.title === "Zippyshare"
+        )?.url;
+        console.log(zippyshareurl);
+        useZippyshare(zippyshareurl).then((data) => {
+          if (!data)
+            return Alert.alert("Error", "No se pudo reproducir el video", [
+              { text: "OK", onPress: () => navigate(-1) },
+            ]);
+          setVideoUrl(data);
+          setLoading(false);
+        });
+      }
+    })();
     return () => {
       true;
     };
   }, [data, status]);
-  
+
   if (status === "error") return <Text>Error</Text>;
   if (loading || !videoUrl) {
     return (
@@ -45,10 +56,15 @@ const Player = ({from}) => {
       </View>
     );
   }
+  if (useLocalPlayer) {
+    return playVideo(videoUrl, () => {
+      navigate(-1);
+    });
+  }
   return (
-    <View style={styles.container}>
-      <VideoPlayer url={videoUrl} from/>
-    </View>
+    //<View style={styles.container}>
+      <VideoPlayer url={videoUrl} from />
+    //</View>
   );
 };
 

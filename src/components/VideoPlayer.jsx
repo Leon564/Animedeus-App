@@ -11,7 +11,9 @@ const VideoPlayer = ({ url, from }) => {
       true;
     };
   }, []);
-  
+  const videoRef = React.useRef(null);
+  const navigate = useNavigate();
+
   const setOrientation = () => {
     if (Dimensions.get("window").height > Dimensions.get("window").width) {
       //Device is in portrait mode, rotate to landscape mode.
@@ -19,10 +21,10 @@ const VideoPlayer = ({ url, from }) => {
     } else {
       //Device is in landscape mode, rotate to portrait mode.
       ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT);
+      navigate(-1);
     }
   };
-  const videoRef = React.useRef(null);
-  const navigate = useNavigate();
+  
   const handleError = (error) => {
     Alert.alert("Error", "No se pudo reproducir el video", [
       { text: "OK", onPress: () => navigate(from) },

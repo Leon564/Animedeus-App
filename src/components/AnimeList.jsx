@@ -13,7 +13,6 @@ const AnimeList = () => {
   const url = "https://animedeus-api.onrender.com/animes/directory";
 
   useEffect(() => {
-    console.log(location);
     try {
       setStatus("loading");
       const query = new URLSearchParams(location.search).get("q") || "";
@@ -46,6 +45,7 @@ const AnimeList = () => {
   ) : (
     <FlatList
       data={data}
+      initialNumToRender={10}
       keyExtractor={({ _id }, index) => _id}
       renderItem={({ item, index }) => <AnimeItem item={item} index={index} />}
       //renderItem={({ item, index }) => <StyledText>{item.title}</StyledText>}

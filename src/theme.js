@@ -34,6 +34,9 @@ const theme = {
   },
   icons: {
     menu: "bars",
+    info : "list",
+    detail : "info-circle",
+    play: "play",
     back: "arrow-left",
     search: "search",
     close: "times",
