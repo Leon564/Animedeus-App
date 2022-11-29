@@ -31,13 +31,20 @@ const Anime = () => {
   //console.log(slug);
   if (status === "error") return <Text>Error</Text>;
   if (status !== "success") return <Text>Loading...</Text>;
-  
+
   const dimensions = Dimensions.get("window");
   const imageHeight = Math.round((dimensions.width * 9) / 16);
   const imageWidth = dimensions.width;
-//console.log(data)
+  //console.log(data)
   //console.log(imageHeight, imageWidth);
   //
+  let banner = data.banner;
+  if (
+    banner === "https://i.ibb.co/1Tp6cTn/x1080.jpg" &&
+    data?.jikan?.trailer?.images?.large_image_url
+  )
+    banner = data?.jikan?.trailer?.images?.large_image_url;
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.bannerContainer}>
@@ -45,7 +52,7 @@ const Anime = () => {
           style={{ height: imageHeight, width: imageWidth }}
           //source={{ uri: data?.jikan.images.jpg.large_image_url }}
           source={{
-            uri: data?.jikan?.trailer?.images?.large_image_url || data.banner,
+            uri: banner,
           }}
         />
       </View>
@@ -57,7 +64,9 @@ const Anime = () => {
 
       <View style={styles.episodesSection}>
         <TouchableOpacity
-          onPress={() => navigate(`/episodes/${data.slug}?page_title=${data.title}`)}
+          onPress={() =>
+            navigate(`/episodes/${data.slug}?page_title=${data.title}`)
+          }
           style={styles.episodesButton}
         >
           <StyledText
@@ -82,7 +91,7 @@ const styles = StyleSheet.create({
     height: "100%",
     //backgroundColor: theme.backgroundColors.darkSecondary,
   },
-  
+
   banner: {
     width: "100%",
     height: 200,
@@ -94,15 +103,13 @@ const styles = StyleSheet.create({
     position: "relative",
     top: 0,
   },
-  
+
   info: {
     //margin: 5,
     paddingVertical: 10,
     paddingHorizontal: 2,
   },
 
-  
-  
   episodesSection: {
     width: "100%",
     height: "auto",
