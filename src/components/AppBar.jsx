@@ -19,16 +19,15 @@ const AppBar = () => {
   useEffect(() => {
     setTitle(
       new URLSearchParams(location.search).get("page_title") || "AnimeDeus"
-    );
-    setDisplay(
-      new URLSearchParams(location.search).get("bar_display") ? "none" : "true"
-    );
+    );   
     if (excludeRoutes.includes(location.pathname)) {
-      setDisplay("none");
+      return setDisplay("none");
     }
-  }, [location.search]);
+    setDisplay("true");
+  }, [location]);
 
   const navigate = useNavigate();
+  
   const slideshow = () => {
     let n = location.search;
     if (n) {
@@ -44,6 +43,7 @@ const AppBar = () => {
       search: n,
     });
   };
+
   if (display === "none") return null;
   return (
     <View style={styles.header}>

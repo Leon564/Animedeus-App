@@ -22,25 +22,27 @@ const Configurations = () => {
   useEffect(() => {
     const fetchConfigurations = async () => {
       try {
-        let userOptions = await AsyncStorage.getItem("userOptions");
-        if (!userOptions) {
-          userOptions = {
-            darkMode: false,
-            localPlayer: false,
-            notifications: false,
-          };
-          await AsyncStorage.setItem(
-            "userOptions",
-            JSON.stringify(userOptions)
-          );
-        }
+        const userOptions = await AsyncStorage.getItem("userOptions");
+      
         const parsedUserOptions = JSON.parse(userOptions);
         setDarkMode(parsedUserOptions.darkMode);
         setLocalPlayer(parsedUserOptions.localPlayer);
         setNotifications(parsedUserOptions.notifications);
         setStatus("success");
       } catch (error) {
-        setStatus("error");
+        const userOptions = {
+          darkMode: false,
+          localPlayer: false,
+          notifications: false,
+        };
+        await AsyncStorage.setItem(
+          "userOptions",
+          JSON.stringify(userOptions)
+        );
+        setDarkMode(userOptions.darkMode);
+        setLocalPlayer(userOptions.localPlayer);
+        setNotifications(userOptions.notifications);
+        setStatus("success");
       }
     };
     fetchConfigurations();

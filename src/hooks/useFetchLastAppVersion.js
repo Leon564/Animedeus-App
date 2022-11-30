@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { Alert, Linking } from "react-native";
 import config from "../config";
-
+import { API_URL } from "@env";
 const useFetchLastAppVersion = () => {
-
+  
   const compareNewVersion = (actualVersion, newVersion) => {
     const v1Array = actualVersion.split(".");
     const v2Array = newVersion.split(".");
@@ -21,8 +21,9 @@ const useFetchLastAppVersion = () => {
   useEffect(() => {
     const fetchLastAppVersion = async () => {
       try {
+        console.log(`${API_URL}/versions/last-app-version`);
         const response = await fetch(
-          `${config.API_URL}/versions/last-app-version`
+          `${API_URL}/versions/last-app-version`
         );
         const data = await response.json();
         if (data.version && compareNewVersion(config.APP_VERSION, data.version)) {
@@ -45,7 +46,7 @@ const useFetchLastAppVersion = () => {
         }
       } catch (error) {
         console.error(error);
-        setStatus("error");
+       
       }
     };
 

@@ -22,7 +22,6 @@ const AnimeScoreSection = ({ anime }) => {
   };
 
   const score = () => {
-    console.log(anime?.jikan?.score);
     const data = parseFloat(
       Math.round((anime?.jikan?.score / 10) * 5 * 100) / 100
     ).toFixed(2);

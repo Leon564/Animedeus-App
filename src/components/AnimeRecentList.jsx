@@ -2,6 +2,7 @@ import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
 import EpisodeItem from "./EpisodeRecentItem";
 import StyledText from "./StyledText";
 import { useEffect, useState } from "react";
+import { API_URL } from "@env";
 
 const AnimeList = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -11,7 +12,7 @@ const AnimeList = () => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        "https://animedeus-api.onrender.com/episodes/recents"
+        `${API_URL}/episodes/recents`
       );
       const data = await response.json();
       setData(data);

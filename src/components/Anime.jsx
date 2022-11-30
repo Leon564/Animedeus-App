@@ -21,26 +21,27 @@ import AnimeInfo from "./AnimeInfoSection";
 import AnimeDescriptionSection from "./AnimeDescriptionSection";
 import AnimeScoreSection from "./AnimeScoreSection";
 import AnimeExtraInfoSection from "./AnimeExtraInfoSection";
+import { API_URL } from "@env";
 
 const Anime = () => {
   const navigate = useNavigate();
   const { slug } = useParams();
   const { data, status } = useFetch(
-    "https://animedeus-api.onrender.com/animes/" + slug
+    `${API_URL}/animes/` + slug
   );
-  //console.log(slug);
-  if (status === "error") return <Text>Error</Text>;
+  console.log(data.error ? "error" : data);
+  
   if (status !== "success") return <Text>Loading...</Text>;
 
+  if (data.error) return <StyledText>Error: Anime no encontrado</StyledText>;
   const dimensions = Dimensions.get("window");
   const imageHeight = Math.round((dimensions.width * 9) / 16);
   const imageWidth = dimensions.width;
-  //console.log(data)
   //console.log(imageHeight, imageWidth);
   //
   let banner = data.banner;
   if (
-    banner === "https://i.ibb.co/1Tp6cTn/x1080.jpg" &&
+    banner.includes("x1080.jpg") &&
     data?.jikan?.trailer?.images?.large_image_url
   )
     banner = data?.jikan?.trailer?.images?.large_image_url;

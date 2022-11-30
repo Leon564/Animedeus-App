@@ -3,7 +3,12 @@
     "preview": {
       "android": {
         "buildType": "apk"
+      },
+      "env":{
+        "CBOX_URL":"https://www6.cbox.ws/box/?boxid=830898&boxtag=holaaa",
+        "API_URL": "https://animedeus-api.onrender.com"
       }
+      
     },
     "preview2": {
       "android": {
