@@ -13,7 +13,7 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/adaptive-icon-color.png",
+          "icon": "./assets/adaptive-icon.png",
           "color": "#ffffff"        
         }
       ]
@@ -33,7 +33,7 @@
     "android": {
       "package": "com.animedeus",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/icon.png",
+        "foregroundImage": "./assets/adaptive-icon-color.png",
         "backgroundColor": "#FFFFFF"
       }
     },
