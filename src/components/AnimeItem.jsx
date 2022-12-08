@@ -32,6 +32,15 @@ const AnimeItem = ({ item }) => {
     navigate(`/anime/${item.slug}?page_title=${item.title}`);
    //Alert.alert("Error", "No se pudo reproducir el video");
   };
+
+  const state =(status)=>
+  { 
+    if(status == "Finished Airing") return "Finalizado";
+    if(status == "Currently Airing") return "En emision";
+    if(status == "Not Yet Aired") return "Próximamente";
+    return status;
+  }
+
   return (
     <TouchableOpacity style={styles.itemContainer} onPress={() => getAnimeInfo()}>
       <Image style={styles.image} source={{ uri: item.cover }} />
@@ -47,7 +56,7 @@ const AnimeItem = ({ item }) => {
           {`Tipo: ${item.type}`}
         </StyledText>
         <StyledText numberOfLines={1} color="white" fontSize={"subTitle"}>
-          {`Estado: ${item.status == "Finished" ? "Finalizado" : "En emision"}`}
+          {`Estado: ${state(item.status)}`}
         </StyledText>
       </View>
     </TouchableOpacity>

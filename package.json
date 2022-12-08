@@ -1,12 +1,13 @@
 {
   "name": "animedeus-app",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "eas:preview":"eas build -p android --profile preview"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "~1.17.3",

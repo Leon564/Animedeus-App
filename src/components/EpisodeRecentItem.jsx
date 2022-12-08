@@ -10,7 +10,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import useTimeAgo from "../hooks/useTimeAgo";
 const AnimeItem = ({ item }) => {
   const navigate = useNavigate();
-  const timeAgo = useTimeAgo(item.episodes[0].date);
+  const timeAgo = useTimeAgo(item.date);
   /*
   const play = async () => {
     setLoading(true);
@@ -32,7 +32,7 @@ const AnimeItem = ({ item }) => {
   */
   const getPlayer = () => {
     navigate(
-      `/player/${item.slug}/${item.episodes[0].episodeNumber}?page_title=${item.title}`
+      `/player/${item.animeSlug}/${item.episodeNumber}?page_title=${item.title}`
     );
     //Alert.alert("Error", "No se pudo reproducir el video");
   };
@@ -45,14 +45,14 @@ const AnimeItem = ({ item }) => {
       <View style={styles.infoContainer}>
         <View style={styles.episodeDetails}>
           <StyledText numberOfLines={1} fontWeight={"bold"} color="white">
-            {item.title}
+            {item.animeTitle}
           </StyledText>
           <StyledText
             numberOfLines={1}
             color="white"
             style={{ marginVertical: 10 }}
           >
-            {`Episodio: ${item.episodes[0].episodeNumber}`}
+            {`Episodio: ${item.episodeNumber}`}
           </StyledText>
           <StyledText numberOfLines={1} color="white" fontSize={"subTitle"}>
             {`Hace ${timeAgo}`}
@@ -61,7 +61,7 @@ const AnimeItem = ({ item }) => {
         <View style={styles.Buttons}>
           <TouchableOpacity
             style={styles.detailsButton}
-            onPress={() => navigate(`/anime/${item.slug}`)}
+            onPress={() => navigate(`/anime/${item.animeSlug}`)}
           >
             <Icon
               style={styles.headerButtonText}
