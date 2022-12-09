@@ -10,7 +10,6 @@ import {
 import Constants from "expo-constants";
 import theme from "../theme";
 import AnimeRecentList from "./AnimeRecentList";
-import SlideMenu from "./SlideMenu";
 import { StatusBar } from "expo-status-bar";
 import AppBar from "./AppBar";
 import Chat from "./Chat";
