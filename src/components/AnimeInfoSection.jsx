@@ -3,9 +3,8 @@ import useJikanAired from "../hooks/useJikanAired";
 import theme from "../theme";
 import StyledText from "./StyledText";
 
-const AnimeInfo = ({ anime }) => {
-  
-    const aired = useJikanAired(anime?.jikan?.aired);
+const AnimeInfo = ({ anime, children }) => {
+  const aired = useJikanAired(anime?.jikan?.aired);
 
   return (
     <View style={styles.infoContainer}>
@@ -17,8 +16,9 @@ const AnimeInfo = ({ anime }) => {
           }}
         />
       </View>
+
       <View style={styles.infoSection}>
-        <StyledText fontWeight="bold" fontSize="title" style={styles.info}>
+        <StyledText fontWeight="bold" fontSize="title" style={styles.title}>
           {anime?.jikan?.title || anime?.title}
         </StyledText>
         <StyledText fontWeight="bold" fontSize="subTitle" style={styles.info}>
@@ -28,11 +28,21 @@ const AnimeInfo = ({ anime }) => {
           {anime?.jikan?.type || anime.type}
         </StyledText>
       </View>
+      {children}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  ButtonSection: {
+    width:"100%",
+    backgroundColor: "red",
+    alignItems: "flex-end",
+    justifyContent: "center",
+    alignContent: "center",
+    zIndex: 1,
+    position: "absolute",
+  },
   coverSection: {
     width: "auto",
     height: "40%",
@@ -51,11 +61,17 @@ const styles = StyleSheet.create({
     height: "auto",
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",//"space-between",
     backgroundColor: theme.backgroundColors.darkSecondary,
+  },
+  title: {
+    width: "80%",
+    paddingVertical: 10,
+    paddingHorizontal: 2,
   },
   infoSection: {
     width: "60%",
+    paddingLeft: 10,
     // backgroundColor: "red",
     //height: "100%",
     //marginRight: 5,

@@ -10,7 +10,7 @@ import {
 import config from "../config";
 import theme from "../theme";
 
-const AppBar = () => {
+const AppBar = ({slideMenu}) => {
   const excludeRoutes = config.APPBAR_EXCLUDE_ROUTES;
   const [title, setTitle] = React.useState("AnimeDeus");
   const [display, setDisplay] = React.useState("true");
@@ -49,7 +49,7 @@ const AppBar = () => {
     <View style={styles.header}>
       <TouchableOpacity
         style={styles.headerButton}
-        onPress={() => slideshow() /*setHidden()*/}
+        onPress={slideMenu/*slideshow() setHidden()*/}
       >
         <Icon
           style={styles.headerButtonText}

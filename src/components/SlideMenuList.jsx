@@ -9,7 +9,7 @@ const SlideMenuList = ({ hideMenu }) => {
   const navigate = useNavigate();
   const handlePress = (item) => {
     hideMenu();
-    navigate({ search: location.search.replace("slide_menu=true", "") });
+    //navigate({ search: location.search.replace("slide_menu=true", "") });
     navigate(item.path);
   };
   return (

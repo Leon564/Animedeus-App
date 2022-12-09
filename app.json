@@ -5,7 +5,7 @@
     "version": "0.1.4",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "notification": {
       "icon": "./assets/adaptive-icon.png"
     },

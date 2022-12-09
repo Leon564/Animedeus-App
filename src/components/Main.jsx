@@ -20,16 +20,12 @@ import Directory from "./Directory";
 import Episodes from "./Episodes";
 import Configurations from "./Configurations";
 import FeaturedError from "./FeaturedError";
+import SlideMenuModal from "./SlideMenuModal";
 
 const Main = () => {
   const [history, setHistory] = React.useState([]);
-  //const [hiddenSlide, setHiddenSlide] = React.useState(true);
-
-  /*
-  const slideMenu = () => {
-    setHiddenSlide(!hiddenSlide);
-  };
-  */
+  const [slideMenu, setSlideMenu] = React.useState(false);
+  
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -69,8 +65,8 @@ const Main = () => {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <AppBar />
-      <SlideMenu />
+      <AppBar slideMenu={()=> setSlideMenu(true)} />
+      <SlideMenuModal visible={slideMenu} onRequestClose={()=> setSlideMenu(false) }/>
       <Routes>
         <Route path="/" element={<AnimeRecentList />} />
         <Route path="/anime/:slug" element={<Anime />} />

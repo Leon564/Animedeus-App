@@ -22,15 +22,14 @@ import AnimeDescriptionSection from "./AnimeDescriptionSection";
 import AnimeScoreSection from "./AnimeScoreSection";
 import AnimeExtraInfoSection from "./AnimeExtraInfoSection";
 import { API_URL } from "@env";
+import AnimeOptionsButton from "./AnimeOptionsButton";
 
 const Anime = () => {
   const navigate = useNavigate();
   const { slug } = useParams();
-  const { data, status } = useFetch(
-    `${API_URL}/animes/` + slug
-  );
-  console.log(data.error ? "error" : data);
-  
+  const { data, status } = useFetch(`${API_URL}/animes/` + slug);
+  //console.log(data.error ? "error" : data);
+
   if (status !== "success") return <Text>Loading...</Text>;
 
   if (data.error) return <StyledText>Error: Anime no encontrado</StyledText>;
@@ -57,7 +56,10 @@ const Anime = () => {
           }}
         />
       </View>
-      <AnimeInfo anime={data} />
+
+      <AnimeInfo anime={data}>
+        <AnimeOptionsButton anime={data} />
+      </AnimeInfo>
       <AnimeDescriptionSection anime={data} />
       <AnimeScoreSection anime={data} />
 
@@ -100,7 +102,7 @@ const styles = StyleSheet.create({
   bannerContainer: {
     width: "100%",
     height: 150,
-    backgroundColor: "green",
+    backgroundColor: "gray",
     position: "relative",
     top: 0,
   },
