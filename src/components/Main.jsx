@@ -20,11 +20,14 @@ import Episodes from "./Episodes";
 import Configurations from "./Configurations";
 import FeaturedError from "./FeaturedError";
 import SlideMenuModal from "./SlideMenuModal";
+import Login from "./Login";
+import SignUp from "./SignUp";
+import ProtectedRoute from "./ProtectedRoute";
 
 const Main = () => {
   const [history, setHistory] = React.useState([]);
   const [slideMenu, setSlideMenu] = React.useState(false);
-  
+
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -61,25 +64,36 @@ const Main = () => {
     );
     return () => backHandler.remove();
   }, [location.pathname]);
+
+  //return (<Login/>);
+  const user = null;
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <AppBar slideMenu={()=> setSlideMenu(true)} />
-      <SlideMenuModal visible={slideMenu} onRequestClose={()=> setSlideMenu(false) }/>
+      <AppBar slideMenu={() => setSlideMenu(true)} />
+      <SlideMenuModal
+        visible={slideMenu}
+        onRequestClose={() => setSlideMenu(false)}
+      />
       <Routes>
-        <Route path="/" element={<AnimeRecentList />} />
-        <Route path="/anime/:slug" element={<Anime />} />
-        <Route
-          path="/player/:slug/:episodeNumber"
-          element={<Player from={history[history.length - 2]} />}
-        />
-        <Route path="/episodes/:slug" element={<Episodes />} />
-        <Route
-          path="/directory"
-          element={<Directory from={history[history.length - 2]} />}
-        />
-        <Route path="/options" element={<Configurations />} />
-        <Route path="/chat" element={<Chat />} />
+        <Route element={<ProtectedRoute user={user} />}>
+          <Route path="/" element={<AnimeRecentList />} />
+          <Route path="/anime/:slug" element={<Anime />} />
+          <Route
+            path="/player/:slug/:episodeNumber"
+            element={<Player from={history[history.length - 2]} />}
+          />
+          <Route path="/episodes/:slug" element={<Episodes />} />
+          <Route
+            path="/directory"
+            element={<Directory from={history[history.length - 2]} />}
+          />
+          <Route path="/options" element={<Configurations />} />
+          <Route path="/chat" element={<Chat />} />
+        </Route>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<SignUp />} />
+
         <Route path="*" element={<FeaturedError />} />
       </Routes>
     </View>

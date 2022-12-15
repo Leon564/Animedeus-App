@@ -3,17 +3,39 @@ import { Alert, StyleSheet, Text, Pressable, View } from "react-native";
 import Modal from "react-native-modal";
 import DropDownPicker from "react-native-dropdown-picker";
 import theme from "../theme";
+import { API_URL } from "@env";
 
 const AnimeOptionsModal = ({ visible, onRequestClose, anime }) => {
   //const [modalVisible, setModalVisible] = useState(false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
-    { label: "Favorito", value: "favs" },
-    { label: "Ver mas tarde", value: "laters" },
-    { label: "Completado", value: "complets" },
-    { label: "Descartado", value: "discards" },
+    { label: "Favorito", value: 1 },
+    { label: "Viendo", value: 2 },
+    { label: "Completado", value: 3},
+    { label: "En espera", value: 4 },
+    { label: "Descartado", value: 5 },
   ]);
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikxlb241NjQiLCJzdWIiOiI2Mzk1NjIzZDBkOGZmMzM0NjhhZmIyOWMiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2NzA5NjczMTAsImV4cCI6MTcwMjUwMzMxMH0.qa8nBtFcENRdfHpA58yp8uTW-o1wQ0SKkt278lEJ_G8"
+  const pushAnime = (slug, option) => {
+    fetch(`${API_URL}/users/anime`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        anime:slug,
+        type:option,
+      }),
+    })
+  }
+
+
+  const onSave = () => {
+    pushAnime(anime.slug, value);
+    onRequestClose();
+  }
 
   return (
     <View style={styles.centeredView}>
@@ -44,7 +66,7 @@ const AnimeOptionsModal = ({ visible, onRequestClose, anime }) => {
             <View style={styles.buttons}>
             <Pressable
               style={[styles.button, styles.buttonClose]}
-              onPress={onRequestClose}
+              onPress={()=>onSave()}
             >
               <Text style={styles.textStyle}>Guardar</Text>
             </Pressable>
