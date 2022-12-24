@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { View, StyleSheet, BackHandler, Alert } from "react-native";
 import {
   Route,
@@ -23,50 +23,24 @@ import SlideMenuModal from "./SlideMenuModal";
 import Login from "./Login";
 import SignUp from "./SignUp";
 import ProtectedRoute from "./ProtectedRoute";
+//import useAuth from "../hooks/useAuth";
+import useBackButton from "../hooks/useBackButton";
+import LogOut from "./LogOut";
+import {AuthContext} from "./AuthContext";
+import MyAnimes from "./MyAnimes";
 
 const Main = () => {
   const [history, setHistory] = React.useState([]);
   const [slideMenu, setSlideMenu] = React.useState(false);
+  //const {user, authStatus} = useAuth();
+  const {user, isLoggedIn,...conetc}=useContext(AuthContext);
+ // console.log({conetc});
 
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    setHistory([...history, location.pathname]);
-    if (history.length > 10) {
-      setHistory(history.slice(1));
-    }
-    const handleBackButton = () => {
-      if (location.pathname === "/") {
-        Alert.alert(
-          "Exit App",
-          "Exiting the application?", // <- this part is optional, you can pass an empty string
-          [
-            {
-              text: "Cancel",
-              onPress: () => console.log("Cancel Pressed"),
-              style: "cancel",
-            },
-
-            { text: "OK", onPress: () => BackHandler.exitApp() },
-          ],
-          { cancelable: false }
-        );
-        return true;
-      } else {
-        navigate(-1);
-        return true;
-      }
-    };
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      handleBackButton
-    );
-    return () => backHandler.remove();
-  }, [location.pathname]);
-
+  useBackButton();
+  
   //return (<Login/>);
-  const user = null;
+  //const user = true;
+  //const user  = useAuth();
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -76,7 +50,7 @@ const Main = () => {
         onRequestClose={() => setSlideMenu(false)}
       />
       <Routes>
-        <Route element={<ProtectedRoute user={user} />}>
+        <Route element={<ProtectedRoute user={user} authStatus={isLoggedIn}/>}>
           <Route path="/" element={<AnimeRecentList />} />
           <Route path="/anime/:slug" element={<Anime />} />
           <Route
@@ -90,6 +64,8 @@ const Main = () => {
           />
           <Route path="/options" element={<Configurations />} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/logout" element={<LogOut/>} />
+          <Route path="/favorites" element={<MyAnimes />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<SignUp />} />

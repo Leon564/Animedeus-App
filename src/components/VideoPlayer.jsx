@@ -5,13 +5,14 @@ import { Video } from "expo-av";
 import { useNavigate } from "react-router-native";
 
 const VideoPlayer = ({ url, from }) => {
-
+const videoRef = React.useRef(null);
   useEffect(() => {
     return () => {
-      true;
+      //console.log(videoRef?.current?.remove())
+      true
     };
   }, []);
-  const videoRef = React.useRef(null);
+  
   const navigate = useNavigate();
 
   const setOrientation = () => {

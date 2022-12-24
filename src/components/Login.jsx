@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Image,
   StyleSheet,
@@ -14,42 +14,47 @@ import Constants from "expo-constants";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import theme from "../theme";
 import { useNavigate } from "react-router-native";
+//import useAuth from "../hooks/useAuth";
+import { AuthContext } from "./AuthContext";
+
 
 const Login = () => {
-  
+  //const { login } = useAuth();
+  const { login, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  
+  //disable button when inputs are empty
+  const [buttonDisabled, setButtonDisabled] = React.useState(true);
 
-    //disable button when inputs are empty
-    const [buttonDisabled, setButtonDisabled] = React.useState(true);
-
-    React.useEffect(() => {
-      if (username.length > 0 && password.length > 0) {
-        setButtonDisabled(false);
-      } else {
-        setButtonDisabled(true);
-      }
-    }, [username, password]);
+  React.useEffect(() => {
+    if (username.length > 0 && password.length > 0) {
+      setButtonDisabled(false);
+    } else {
+      setButtonDisabled(true);
+    }
+  }, [username, password]);
   //change te color of borderbottom of input when focused
   const [usernameFocused, setUsernameFocused] = React.useState(false);
   const [passwordFocused, setPasswordFocused] = React.useState(false);
-
 
   const handleUsernameFocus = (focus) => {
     setUsernameFocused(focus);
   };
 
-
   const handlePasswordFocus = (focus) => {
     setPasswordFocused(focus);
   };
 
+  const handleLogin = () => {
+    if(buttonDisabled) return;
+    //console.log("username: ", username);
+    login({ username, password});
+  };
+
   //ref for password input
   let passwordInput;
-
 
   return (
     <LinearGradient
@@ -90,8 +95,8 @@ const Login = () => {
                 onSubmitEditing={() => passwordInput.focus()}
                 onChangeText={setUsername}
                 value={username}
-                onFocus={()=>handleUsernameFocus(true)}
-                onBlur={()=>handleUsernameFocus(false)}
+                onFocus={() => handleUsernameFocus(true)}
+                onBlur={() => handleUsernameFocus(false)}
                 placeholder="Usuario o Email"
                 placeholderTextColor={theme.colors.textSecondary}
               />
@@ -107,9 +112,11 @@ const Login = () => {
                 }}
                 onChangeText={setPassword}
                 value={password}
-                onFocus={()=>handlePasswordFocus(true)}
-                onBlur={()=>handlePasswordFocus(false)}
+                autoCapitalize="none"
+                onFocus={() => handlePasswordFocus(true)}
+                onBlur={() => handlePasswordFocus(false)}
                 placeholder="Contraseña"
+                onSubmitEditing={() => handleLogin()}
                 ref={(input) => (passwordInput = input)}
                 placeholderTextColor={theme.colors.textSecondary}
                 secureTextEntry={true}
@@ -123,22 +130,26 @@ const Login = () => {
                 backgroundColor: theme.colors.primary,
                 opacity: buttonDisabled ? 0.5 : 1,
               }}
-              onPress={() => { buttonDisabled ? null : console.log("login") }}
+              onPress={() => handleLogin()}
             >
               <StyledText style={styles.buttonText}>INICIAR SESIÓN</StyledText>
             </TouchableOpacity>
             <TouchableOpacity>
-              <StyledText style={styles.guestButtonText}>INICIAR COMO INVITADO</StyledText>
+              <StyledText style={styles.guestButtonText}>
+                INICIAR COMO INVITADO
+              </StyledText>
             </TouchableOpacity>
           </View>
           <View style={styles.footerSection}>
-            <TouchableOpacity onPress={()=>navigate("/register")}>
+            <TouchableOpacity onPress={() => navigate("/register")}>
               <StyledText style={styles.footerText}>
                 CREAR UNA CUENTA
               </StyledText>
             </TouchableOpacity>
             <TouchableOpacity>
-              <StyledText style={styles.footerText}>¿OLVIDASTE TU CONTRASEÑA?</StyledText>
+              <StyledText style={styles.footerText}>
+                ¿OLVIDASTE TU CONTRASEÑA?
+              </StyledText>
             </TouchableOpacity>
           </View>
         </View>

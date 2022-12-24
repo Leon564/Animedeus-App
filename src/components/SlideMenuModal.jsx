@@ -1,12 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Alert, StyleSheet, Text, Pressable, View, ImageBackground } from "react-native";
 import Modal from "react-native-modal";
 import DropDownPicker from "react-native-dropdown-picker";
 import theme from "../theme";
 import StyledText from "./StyledText";
 import SlideMenuList from "./SlideMenuList";
+import { AuthContext } from "./AuthContext";
+//import AuthContext from "./AuthContext";
+//import useAuth from "../hooks/useAuth";
 const SlideMenuModal = ({ visible, onRequestClose }) => {
- 
+ //const {user}=useAuth()
+  const {user}= useContext(AuthContext);
+ //const authContext = React.useContext(AuthContext);
+  //console.log("authContext", authContext);
+
   return (
       <Modal
         animationIn="slideInLeft"
@@ -27,8 +34,10 @@ const SlideMenuModal = ({ visible, onRequestClose }) => {
               resizeMode="cover"
             >
               <StyledText fontWeight={"bold"} style={styles.titleText}>
-                ANIMEDEUS
+                {/*user ? user : "Guest"*/}
+                {user ? user : "Guest"}
               </StyledText>
+
             </ImageBackground>
           </View>
           <View style={styles.ButtonsSection}>
@@ -102,6 +111,12 @@ const styles = StyleSheet.create({
     right: 0,
     width: "40%",
     height: "100%",
+  },
+  usernameText: {
+    //color: theme.colors.textSecondary,
+    fontSize: 14,
+    marginTop: 10,
+    fontWeight: "bold",
   },
 });
 

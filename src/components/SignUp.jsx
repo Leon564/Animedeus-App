@@ -14,6 +14,8 @@ import Constants from "expo-constants";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import theme from "../theme";
 import { useNavigate } from "react-router-native";
+import { API_URL } from "@env";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -28,7 +30,7 @@ const SignUp = () => {
   //disable button when inputs are empty
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
 
-  React.useEffect(() => {    
+  React.useEffect(() => {
     if (
       username.length > 0 &&
       password.length > 0 &&
@@ -39,7 +41,6 @@ const SignUp = () => {
     } else {
       setButtonDisabled(true);
     }
-    
   }, [username, password, password2, email]);
   //change te color of borderbottom of input when focused
   const [usernameFocused, setUsernameFocused] = React.useState(false);
@@ -63,23 +64,38 @@ const SignUp = () => {
     setEmailFocused(focus);
   };
 
-  const submit = () => {
+  const submit = async () => {
     //validate password and password2, check if email is valid, check is password contains at least 6 characters
     console.log("submit");
     console.log({ email, password, password2, username });
     if (password !== password2) {
-      ToastAndroid.show("Passwords do not match", ToastAndroid.SHORT);
+      ToastAndroid.show("Las contraseñas no coinciden.", ToastAndroid.SHORT);
       return;
     }
-    if (password.length < 6) {
-      ToastAndroid.show(
-        "Password must be at least 6 characters long",
-        ToastAndroid.SHORT
-      );
+    try {
+      const response = await fetch(`${API_URL}/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+        }),
+      });
+      const data = await response.json();
+      if (data.error) {
+        ToastAndroid.show(data?.message[0], ToastAndroid.SHORT);
+        return;
+      }
+      await AsyncStorage.setItem("token", data.access_token);
+      await AsyncStorage.setItem("username", JSON.stringify(username));
+      navigate("/", { replace: true });
+    } catch (error) {
+      ToastAndroid.show(data?.message[0], ToastAndroid.SHORT);
       return;
     }
-
- 
   };
 
   //ref for next input
@@ -167,6 +183,7 @@ const SignUp = () => {
                     : theme.colors.textSecondary,
                 }}
                 onChangeText={setPassword}
+                autoCapitalize="none"
                 value={password}
                 onFocus={() => handlePasswordFocus(true)}
                 onBlur={() => handlePasswordFocus(false)}
@@ -187,6 +204,7 @@ const SignUp = () => {
                     : theme.colors.textSecondary,
                 }}
                 onChangeText={setPassword2}
+                autoCapitalize="none"
                 value={password2}
                 onFocus={() => handlePassword2Focus(true)}
                 onBlur={() => handlePassword2Focus(false)}
@@ -312,6 +330,7 @@ const styles = StyleSheet.create({
     //flex: 1,
     //justifyContent: "center",
     alignItems: "center",
+    marginBottom: 10,
     //backgroundColor: "#9b59b6",
   },
   footerText: {

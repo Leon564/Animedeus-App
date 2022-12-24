@@ -1,41 +1,49 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Alert, StyleSheet, Text, Pressable, View } from "react-native";
 import Modal from "react-native-modal";
 import DropDownPicker from "react-native-dropdown-picker";
 import theme from "../theme";
 import { API_URL } from "@env";
+import { AuthContext } from "./AuthContext";
+import { useNavigate } from "react-router-native";
 
-const AnimeOptionsModal = ({ visible, onRequestClose, anime }) => {
+const AnimeOptionsModal = ({ visible, onRequestClose, anime, setSaved }) => {
   //const [modalVisible, setModalVisible] = useState(false);
+  const navigate = useNavigate();
+  const { getToken } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
-    { label: "Favorito", value: 1 },
-    { label: "Viendo", value: 2 },
-    { label: "Completado", value: 3},
-    { label: "En espera", value: 4 },
-    { label: "Descartado", value: 5 },
+    { label: "Viendo", value: 1 },
+    { label: "Completado", value: 2 },
+    { label: "En espera", value: 3 },
+    { label: "Descartado", value: 4 },
   ]);
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikxlb241NjQiLCJzdWIiOiI2Mzk1NjIzZDBkOGZmMzM0NjhhZmIyOWMiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2NzA5NjczMTAsImV4cCI6MTcwMjUwMzMxMH0.qa8nBtFcENRdfHpA58yp8uTW-o1wQ0SKkt278lEJ_G8"
-  const pushAnime = (slug, option) => {
+  //const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ikxlb241NjQiLCJzdWIiOiI2Mzk1NjIzZDBkOGZmMzM0NjhhZmIyOWMiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2NzA5NjczMTAsImV4cCI6MTcwMjUwMzMxMH0.qa8nBtFcENRdfHpA58yp8uTW-o1wQ0SKkt278lEJ_G8"
+
+  const pushAnime = async (slug, option) => {
+    const token = await getToken();
+    console.log(slug, option);
+    console.log(token);
     fetch(`${API_URL}/users/anime`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        anime:slug,
-        type:option,
+        slug: slug,
+        type: option,
       }),
-    })
-  }
-
+    }).then((res) => {
+      if (value) setSaved(true);
+    });
+  };
 
   const onSave = () => {
     pushAnime(anime.slug, value);
     onRequestClose();
-  }
+  };
 
   return (
     <View style={styles.centeredView}>
@@ -59,23 +67,23 @@ const AnimeOptionsModal = ({ visible, onRequestClose, anime }) => {
               setValue={setValue}
               setItems={setItems}
               placeholder="Selecciona una opcion"
-              style={{ borderRadius:0 }}
-              dropDownContainerStyle={{ borderRadius:0 }}
+              style={{ borderRadius: 0 }}
+              dropDownContainerStyle={{ borderRadius: 0 }}
               coverScreen={false}
             />
             <View style={styles.buttons}>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={()=>onSave()}
-            >
-              <Text style={styles.textStyle}>Guardar</Text>
-            </Pressable>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={onRequestClose}
-            >
-              <Text style={styles.textStyle}>Cancelar</Text>
-            </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => onSave()}
+              >
+                <Text style={styles.textStyle}>Guardar</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={onRequestClose}
+              >
+                <Text style={styles.textStyle}>Cancelar</Text>
+              </Pressable>
             </View>
           </View>
         </View>
@@ -117,7 +125,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     marginTop: 10,
   },
- 
+
   buttonClose: {
     backgroundColor: theme.colors.extras,
   },

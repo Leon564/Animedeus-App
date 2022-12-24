@@ -1,12 +1,19 @@
-import { Alert, Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Image,
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { playVideo } from "../playVideo";
 import theme from "../theme";
 import StyledText from "./StyledText";
 import { useNavigate } from "react-router-native";
+import Icon from "react-native-vector-icons/FontAwesome5";
 import useZippyshare from "../hooks/useZippyshare";
 import { useState } from "react";
 
-import Icon from "react-native-vector-icons/FontAwesome5";
 import useTimeAgo from "../hooks/useTimeAgo";
 const AnimeItem = ({ item }) => {
   const navigate = useNavigate();
@@ -41,46 +48,31 @@ const AnimeItem = ({ item }) => {
     <TouchableOpacity style={styles.itemContainer} onPress={() => getPlayer()}>
       <View style={styles.imageContainer}>
         <Image style={styles.image} source={{ uri: item.cover }} />
+        <Icon
+          style={styles.playIcon}
+          name={theme.icons.play_circle}
+          color="#fff"
+        />
       </View>
-      <View style={styles.infoContainer}>
-        <View style={styles.episodeDetails}>
-          <StyledText numberOfLines={1} fontWeight={"bold"} color="white">
-            {item.animeTitle}
-          </StyledText>
-          <StyledText
-            numberOfLines={1}
-            color="white"
-            style={{ marginVertical: 10 }}
-          >
-            {`Episodio: ${item.episodeNumber}`}
-          </StyledText>
-          <StyledText numberOfLines={1} color="white" fontSize={"subTitle"}>
-            {`Hace ${timeAgo}`}
-          </StyledText>
-        </View>
-        <View style={styles.Buttons}>
-          <TouchableOpacity
-            style={styles.detailsButton}
-            onPress={() => navigate(`/anime/${item.animeSlug}`)}
-          >
-            <Icon
-              style={styles.headerButtonText}
-              name={theme.icons.info}
-              color="#fff"
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.detailsButton}
-            onPress={() => getPlayer()}
-          >
-            <Icon
-              style={styles.headerButtonText}
-              name={theme.icons.play}
-              color="#fff"
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
+      <TouchableOpacity style={styles.infoContainer} onPress={() => navigate(`/anime/${item.animeSlug}`)}>
+        
+          <View style={styles.episodeDetails}>
+            <StyledText numberOfLines={1} fontWeight={"bold"} color="white">
+              {item.animeTitle}
+            </StyledText>
+            <StyledText
+              numberOfLines={1}
+              color="white"
+              style={{ marginVertical: 10 }}
+            >
+              {`Episodio: ${item.episodeNumber}`}
+            </StyledText>
+            <StyledText numberOfLines={1} color="white" fontSize={"subTitle"}>
+              {`Hace ${timeAgo}`}
+            </StyledText>
+          </View>
+        
+      </TouchableOpacity>
     </TouchableOpacity>
   );
 };
@@ -135,6 +127,10 @@ const styles = StyleSheet.create({
     width: "45%",
     alignItems: "center",
     justifyContent: "center",
+  },
+  playIcon: {
+    position: "absolute",
+    fontSize: 50,
   },
 });
 
