@@ -32,19 +32,11 @@ const Options = () => {
   const [option, setOption] = useState("favorites");
 
   const navigate = useNavigate();
+ 
   useEffect(() => {
-    if (option === 0) {
-      navigate({ search: "?option=0" });
-    } else if (option === 1) {
-      navigate({ search: "?option=1" });
-    } else if (option === 2) {
-      navigate({ search: "?option=2" });
-    } else if (option === 3) {
-      navigate({ search: "?option=3" });
-    } else if (option === 4) {
-      navigate({ search: "?option=4" });
-    }
+    navigate({ search: `?option=${option}` });
   }, [option]);
+
   const location = useLocation();
   let flatListRef = null;
 
