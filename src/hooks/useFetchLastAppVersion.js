@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { Alert, Linking } from "react-native";
 import config from "../config";
-import { API_URL } from "@env";
+//import { API_URL } from "@env";
+const API_URL = process.env.API_URL || "http://localhost:3000";
 const useFetchLastAppVersion = () => {
   
   const compareNewVersion = (actualVersion, newVersion) => {

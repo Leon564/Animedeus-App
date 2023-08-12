@@ -21,8 +21,10 @@ import AnimeInfo from "./AnimeInfoSection";
 import AnimeDescriptionSection from "./AnimeDescriptionSection";
 import AnimeScoreSection from "./AnimeScoreSection";
 import AnimeExtraInfoSection from "./AnimeExtraInfoSection";
-import { API_URL } from "@env";
 import AnimeOptionsButton from "./AnimeOptionsButton";
+
+
+const API_URL = process.env.API_URL || "http://localhost:3000";
 
 const Anime = () => {
   const navigate = useNavigate();

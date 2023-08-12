@@ -1,8 +1,9 @@
 import React, { createContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useLocation, useNavigate } from "react-router-native";
-import { API_URL } from "@env";
 import { Alert } from "react-native";
+
+const API_URL = process.env.API_URL || "http://localhost:3000";
 
 const AuthContext = createContext({
   isLoggedIn: false,

@@ -3,7 +3,8 @@ import AnimeItem from "./AnimeItem";
 import StyledText from "./StyledText";
 import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-native";
-import { API_URL } from "@env";
+
+const API_URL = process.env.API_URL || "http://localhost:3000";
 const AnimeList = () => {
   const [data, setData] = useState([]);
   const [status, setStatus] = useState("loading");

@@ -2,7 +2,8 @@ import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
 import EpisodeItem from "./EpisodeRecentItem";
 import StyledText from "./StyledText";
 import { useEffect, useState } from "react";
-import { API_URL } from "@env";
+
+const API_URL = process.env.API_URL || "http://localhost:3000";
 
 const AnimeList = () => {
   const [refreshing, setRefreshing] = useState(false);

@@ -3,7 +3,8 @@ import { View, StyleSheet, Text, Dimensions } from "react-native";
 import DynamicHeightWebView from "./DynamicHeightWebView";
 import OnlyBackTopBar from "./OnlyBackTopBar";
 import theme from "../theme";
-import { CBOX_URL } from "@env";
+
+const CBOX_URL = process.env.CBOX_URL
 
 const WebViewTest = () => {
   const dimensions = Dimensions.get("window");

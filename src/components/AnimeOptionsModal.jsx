@@ -3,9 +3,11 @@ import { Alert, StyleSheet, Text, Pressable, View } from "react-native";
 import Modal from "react-native-modal";
 import DropDownPicker from "react-native-dropdown-picker";
 import theme from "../theme";
-import { API_URL } from "@env";
 import { AuthContext } from "./AuthContext";
 import { useNavigate } from "react-router-native";
+
+
+const API_URL = process.env.API_URL || "http://localhost:3000";
 
 const AnimeOptionsModal = ({ visible, onRequestClose, anime, setSaved }) => {
   //const [modalVisible, setModalVisible] = useState(false);

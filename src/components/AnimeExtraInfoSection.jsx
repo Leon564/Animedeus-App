@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, TouchableOpacity, View } from "react-native"
+import { Alert, StyleSheet, TouchableOpacity, View, Linking } from "react-native"
 import theme from "../theme";
 import StyledText from "./StyledText"
 

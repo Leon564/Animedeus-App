@@ -14,9 +14,9 @@ import Constants from "expo-constants";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import theme from "../theme";
 import { useNavigate } from "react-router-native";
-import { API_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+const API_URL = process.env.API_URL || "http://localhost:3000";
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
